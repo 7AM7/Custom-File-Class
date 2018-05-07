@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -131,12 +131,12 @@ namespace File
                             {
                                 Console.WriteLine(popName[i] + " : " + rows[i]);
                             }
+                            file.Close();
                             return true;
                             //break;
                         }
                     }
-                    file.Close();
-
+                   
 
                 }
             }
@@ -208,14 +208,9 @@ namespace File
         }
         public bool Update(string text, Object obj, Type typeObj)
         {
+                
             if (System.IO.File.Exists(FileName))
             {
-                Console.WriteLine("Data After Updated: ");
-                if (!Search(text, obj, typeObj))
-                {
-                    Console.WriteLine("The record not found !");
-                    return false;
-                }
 
                 string newFile = "";
                 string temp = "";
@@ -226,28 +221,21 @@ namespace File
                     Console.WriteLine("You Don't have any Property !");
                     return false;
                 }
+
+
                 Console.WriteLine("\n...Updated Time....");
                 foreach (string line in file)
                 {
                     string[] rows = line.Split("|".ToCharArray());
                     if (rows[0] == text)
                     {
-                        foreach (System.Reflection.PropertyInfo p in typeObj.GetProperties())
-                        {
-                            Console.Write("Enter {0} : ", p.Name);
 
-                            string data = Convert.ToString(Console.ReadLine());
-
-                            System.Reflection.PropertyInfo prop = obj.GetType().GetProperty(p.Name);
-                            System.Type propertyType = prop.PropertyType;
-
-                            ConvertType(obj, prop, propertyType, data);
-                        }
                         int i = 0;
                         string tempp = "";
                         foreach (System.Reflection.PropertyInfo p in typeObj.GetProperties())
                         {
                             string propValue = obj.GetType().GetProperty(p.Name).GetValue(obj, null).ToString();
+                            Console.WriteLine(propValue);
                             if (string.IsNullOrEmpty(propValue))
                             {
                                 Console.WriteLine(p.Name + " is Null !!");
@@ -269,6 +257,7 @@ namespace File
                 if (newFile.Length != 0)
                 {
                     System.IO.File.WriteAllText(FileName, newFile.ToString());
+                    Console.WriteLine("\n...Updated Done....");
                     return true;
                 }
             }
