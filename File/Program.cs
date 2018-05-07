@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -21,7 +21,7 @@ namespace File
             do
             {
                 Console.WriteLine("1- Create File\n2- Insert to file\n3- Update data in file\n" +
-                                  "4- Delete data from file\n5- Search In file");
+                                  "4- Delete data from file\n5- Search In file\n6- Display data");
 
                 Console.Write("Enter Your Choice : ");
                 int choice = Convert.ToInt32(Console.ReadLine());
@@ -47,8 +47,27 @@ namespace File
                         break;
                     case 3:
                         Console.Write("Enter the Student Id for UPDATE: ");
+                        int id = Convert.ToInt32(Console.ReadLine());
+
+
+
+                        if (!file.Search(id.ToString(), std, typeof(Student)))
+                        {
+                            Console.WriteLine("The record not found !");
+                            break;
+                        }
+                        Console.WriteLine("Data After Updated: ");
+         
+                        Console.WriteLine("Enter New Data");
+                        Console.Write("Enter Id: ");
                         std.Id = Convert.ToInt32(Console.ReadLine());
-                        if(file.Update(std.Id.ToString(), std, typeof(Student)))
+                        Console.Write("Enter First Name: ");
+                        std.FName = Console.ReadLine();
+                        Console.Write("Enter Last Name: ");
+                        std.LName = Console.ReadLine();
+
+
+                        if(!file.Update(id.ToString(), std, typeof(Student)))
                             Console.WriteLine("Not found !!");
                         break;
                     case 4:
@@ -62,6 +81,9 @@ namespace File
                         std.Id = Convert.ToInt32(Console.ReadLine());
                         if(!file.Search(std.Id.ToString(), std, typeof(Student)))
                             Console.WriteLine("Not found !!");
+                        break;
+                    case 6:
+                        file.Read(std, typeof(Student));
                         break;
                     default:
                         Console.WriteLine("Error Choice !!");
